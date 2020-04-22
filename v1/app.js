@@ -1,9 +1,23 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var dotenv = require("dotenv");
+var mongoose = require("mongoose");
+
+dotenv.config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set("view engine", "ejs");
+
+mongoose.connect(
+  process.env.DB_CONNECT,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => console.log("db connected")
+);
 
 var campgrounds = [
   {
