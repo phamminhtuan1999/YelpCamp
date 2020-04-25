@@ -1,0 +1,15 @@
+body {
+  background: tomato;
+}
+
+.thumnail img {
+  width: 100%;
+}
+
+.thumnail {
+  padding: 0;
+}
+
+.thumnail .caption-full {
+  padding: 9px;
+}
