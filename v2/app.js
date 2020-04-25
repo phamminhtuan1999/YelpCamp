@@ -22,6 +22,7 @@ mongoose.connect(
 var campgroundsSchema = new mongoose.Schema({
   name: String,
   image: String,
+  description: String,
 });
 
 var Campground = mongoose.model("Campground", campgroundsSchema);
@@ -31,6 +32,7 @@ var Campground = mongoose.model("Campground", campgroundsSchema);
 //     name: "Cat",
 //     image:
 //       "https://en.freejpg.com.ar/image-900/8a/8ad1/F100011956-gray_cat_with_yellow_eyes_looking_at_the_camera.jpg",
+//     description: "What a lovely dog",
 //   },
 //   function (err, campground) {
 //     if (err) {
@@ -94,14 +96,15 @@ app.get("/campgrounds", function (req, res) {
   Campground.find({}, (err, allCampgrounds) => {
     err
       ? console.log(err)
-      : res.render("campgrounds", { campgrounds: allCampgrounds });
+      : res.render("index", { campgrounds: allCampgrounds });
   });
 });
 
 app.post("/campgrounds", function (req, res) {
   var newName = req.body.name;
   var newImage = req.body.image;
-  var newCampground = { name: newName, image: newImage };
+  var desc = req.body.description;
+  var newCampground = { name: newName, image: newImage, description: desc };
   //campgrounds.push({ name: newName, image: newImage });
   Campground.create(newCampground, (err, newCreated) => {
     err ? console.log(err) : res.redirect("/campgrounds");
@@ -110,6 +113,15 @@ app.post("/campgrounds", function (req, res) {
 
 app.get("/campgrounds/new", function (req, res) {
   res.render("new");
+});
+
+app.get("/campgrounds/:id", (req, res) => {
+  //find the id
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    err
+      ? console.log(err)
+      : res.render("show", { campground: foundCampground });
+  });
 });
 
 app.listen(process.env.PORT, function () {
